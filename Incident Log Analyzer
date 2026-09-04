@@ -1,4 +1,5 @@
 def analyze_log(filename):
+
     log_count = {
         "INFO": 0,
         "WARNING": 0,
@@ -6,21 +7,22 @@ def analyze_log(filename):
     }
 
     error_messages = []
-
     total_entries = 0
 
     try:
         with open(filename, "r") as file:
 
             for line in file:
-
                 line = line.strip()
 
+                # Skip empty lines
                 if line == "":
                     continue
 
+                # Split into date, time, level and message
                 parts = line.split(" ", 3)
 
+                # Handle malformed lines
                 if len(parts) < 4:
                     print("Skipped malformed line:", line)
                     continue
@@ -30,6 +32,7 @@ def analyze_log(filename):
                 level = parts[2]
                 message = parts[3]
 
+                # Check valid log level
                 if level not in log_count:
                     print("Skipped invalid log level:", level)
                     continue
@@ -37,6 +40,7 @@ def analyze_log(filename):
                 total_entries += 1
                 log_count[level] += 1
 
+                # Store ERROR messages
                 if level == "ERROR":
                     error_messages.append(message)
 
@@ -44,7 +48,8 @@ def analyze_log(filename):
         print("Error: Log file not found.")
         return
 
-    print("\n----- Log Analysis -----")
+    # Display result
+    print("----- Log Analysis -----")
     print("Total entries:", total_entries)
     print("INFO:", log_count["INFO"])
     print("WARNING:", log_count["WARNING"])
@@ -57,5 +62,6 @@ def analyze_log(filename):
     else:
         for message in error_messages:
             print("-", message)
-            
-analyze_log("app.log")
+
+
+analyze_log(".idea/python.py/incident.log")
